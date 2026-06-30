@@ -9,10 +9,10 @@ import { Reveal } from "../Reveal";
 type Status = "idle" | "sending" | "sent" | "error";
 
 export function SellView() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const f = t.sell.form;
   const [status, setStatus] = useState<Status>("idle");
-  const [v, setV] = useState({ name: "", phone: "", email: "", brandModel: "", year: "", mileage: "", message: "" });
+  const [v, setV] = useState({ name: "", phone: "", email: "", brandModel: "", year: "", mileage: "", message: "", company: "" });
 
   const invalid = {
     name: status === "error" && v.name.trim() === "",
@@ -20,14 +20,24 @@ export function SellView() {
     brandModel: status === "error" && v.brandModel.trim() === "",
   };
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (v.name.trim() === "" || v.phone.trim() === "" || v.brandModel.trim() === "") {
       setStatus("error");
       return;
     }
     setStatus("sending");
-    window.setTimeout(() => setStatus("sent"), 900);
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source: "sell", ...v, locale: lang }),
+      });
+      if (!res.ok) throw new Error("request_failed");
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
   }
 
   const field =
@@ -76,6 +86,17 @@ export function SellView() {
               </div>
             ) : (
               <form onSubmit={onSubmit} noValidate className="mt-6 border border-line bg-ink-2 p-6 sm:p-8">
+                {/* Honeypot anti-spam: oculto para humanos, los bots lo rellenan */}
+                <input
+                  type="text"
+                  name="company"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={v.company}
+                  onChange={set("company")}
+                  className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                />
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <div className="flex flex-col gap-2">
                     <label htmlFor="s-name" className="text-[13px] font-medium text-fog">{f.name}</label>

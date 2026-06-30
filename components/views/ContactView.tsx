@@ -10,10 +10,10 @@ import { Reveal } from "../Reveal";
 type Status = "idle" | "sending" | "sent" | "error";
 
 export function ContactView() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const f = t.contact.form;
   const [status, setStatus] = useState<Status>("idle");
-  const [values, setValues] = useState({ name: "", email: "", phone: "", message: "" });
+  const [values, setValues] = useState({ name: "", email: "", phone: "", message: "", company: "" });
 
   const invalid = {
     name: status === "error" && values.name.trim() === "",
@@ -21,14 +21,24 @@ export function ContactView() {
     message: status === "error" && values.message.trim() === "",
   };
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (values.name.trim() === "" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email) || values.message.trim() === "") {
       setStatus("error");
       return;
     }
     setStatus("sending");
-    window.setTimeout(() => setStatus("sent"), 900);
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source: "contact", ...values, locale: lang }),
+      });
+      if (!res.ok) throw new Error("request_failed");
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
   }
 
   const field =
@@ -95,6 +105,17 @@ export function ContactView() {
               </div>
             ) : (
               <form onSubmit={onSubmit} noValidate className="border border-line bg-ink-2 p-6 sm:p-8">
+                {/* Honeypot anti-spam: oculto para humanos, los bots lo rellenan */}
+                <input
+                  type="text"
+                  name="company"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={values.company}
+                  onChange={(e) => setValues((v) => ({ ...v, company: e.target.value }))}
+                  className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                />
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <div className="flex flex-col gap-2">
                     <label htmlFor="c-name" className="text-[13px] font-medium text-fog">{f.name}</label>
