@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Zepaimotors - BOLD PERFORMANCE theme
+   Dark base, racing-red accent, condensed display type.
+   One radius scale (sharp, motorsport feel).
+   ============================================================ */
+@theme {
+  --color-ink: #0b0b0d;          /* page base, off-black */
+  --color-ink-2: #121215;        /* elevated surface */
+  --color-ink-3: #1a1a1f;        /* card base */
+  --color-line: #2a2a31;         /* hairline borders */
+  --color-fog: #9c9ca6;          /* muted text */
+  --color-mist: #66666f;         /* dimmer text */
+  --color-bone: #f5f4f2;         /* primary light text */
+
+  --color-rev: #e11122;          /* accent: racing red */
+  --color-rev-soft: #f12536;     /* accent hover */
+  --color-rev-deep: #8c0c17;     /* accent pressed / borders */
+
+  --breakpoint-xs: 400px;
+
+  --radius-card: 4px;
+
+  --font-display: var(--font-anton), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  --ease-lux: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Condensed display headline helper */
+.display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.92;
+}
+
+::selection {
+  background: var(--color-rev);
+  color: #fff;
+}
+
+/* Fixed film grain overlay — never on scrolling containers */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Diagonal red stripe accents (motorsport) */
+.stripe-edge {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--color-rev) 0,
+    var(--color-rev) 2px,
+    transparent 2px,
+    transparent 9px
+  );
+}
+
+/* Marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 32s linear infinite;
+  will-change: transform;
+}
+
+:where(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid var(--color-rev);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .marquee-track { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
