@@ -483,7 +483,7 @@ export const business = {
   phone: "+33 1 53 67 84 00",
   phoneHref: "+33153678400",
   whatsappHref: "33153678400",
-  email: "contact@zepaimotors.com",
+  email: "info@zepaiagency.com",
   address: "9 Avenue Montaigne, 75008 Paris, France",
   social: {
     instagram: "https://instagram.com",

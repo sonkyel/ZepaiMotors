@@ -54,28 +54,37 @@ export async function POST(req: Request) {
     userAgent: req.headers.get("user-agent") ?? "",
   };
 
-  const webhook = process.env.N8N_WEBHOOK_URL;
+  const sheetsUrl = process.env.SHEETS_WEBAPP_URL;
+  const sheetsToken = process.env.SHEETS_TOKEN ?? "";
+  const n8nUrl = process.env.N8N_WEBHOOK_URL;
 
-  // No webhook configured yet (e.g. local without .env.local): don't break the
-  // form, just log so the developer knows the lead was not forwarded.
-  if (!webhook) {
-    console.warn("[lead] N8N_WEBHOOK_URL not set — lead not forwarded:", lead);
+  const post = (url: string, payload: unknown) =>
+    fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(10000),
+    }).then((r) => {
+      if (!r.ok) throw new Error(`status_${r.status}`);
+      return r;
+    });
+
+  // Send the lead to every configured destination in parallel so one failure
+  // never loses the lead: Google Sheets (storage) + n8n (Retell call).
+  const targets: Promise<Response>[] = [];
+  if (sheetsUrl) targets.push(post(sheetsUrl, { ...lead, token: sheetsToken }));
+  if (n8nUrl) targets.push(post(n8nUrl, lead));
+
+  // Nothing configured yet (e.g. local without .env.local): don't break the form.
+  if (targets.length === 0) {
+    console.warn("[lead] No destination configured (SHEETS_WEBAPP_URL / N8N_WEBHOOK_URL):", lead);
     return NextResponse.json({ ok: true, forwarded: false });
   }
 
-  try {
-    const res = await fetch(webhook, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(lead),
-      // Keep the form snappy; n8n webhook should "Respond Immediately".
-      signal: AbortSignal.timeout(10000),
-    });
-    if (!res.ok) {
-      return NextResponse.json({ ok: false, error: "webhook_failed" }, { status: 502 });
-    }
-  } catch {
-    return NextResponse.json({ ok: false, error: "webhook_unreachable" }, { status: 502 });
+  const results = await Promise.allSettled(targets);
+  const anyOk = results.some((r) => r.status === "fulfilled");
+  if (!anyOk) {
+    return NextResponse.json({ ok: false, error: "delivery_failed" }, { status: 502 });
   }
 
   return NextResponse.json({ ok: true, forwarded: true });

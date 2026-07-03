@@ -36,8 +36,15 @@ Webhook de n8n   ──►  Google Sheets (agregar fila)
 
 ## 2. Checklist: lo que falta para que funcione
 
-> Guía paso a paso completa en **`INTEGRACION-LEADS.md`**. Aquí va el resumen accionable.
+> **Nota:** el **guardado de leads en Google Sheets ya es directo** (Google Apps Script), independiente de n8n. Ver **`GUARDAR-LEADS-SHEET.md`**. Solo falta desplegar ese script y poner `SHEETS_WEBAPP_URL` + `SHEETS_TOKEN` en Vercel.
+> El bloque de **n8n de abajo es SOLO para la llamada de Retell.ai** (opcional). Guía completa en **`INTEGRACION-LEADS.md`**.
 
+### 2.a Guardar leads en la hoja (Apps Script) — ver `GUARDAR-LEADS-SHEET.md`
+- [ ] Pegar y **desplegar** el Apps Script en la hoja `ZepaiMotors - Leads`; copiar la URL `/exec`.
+- [ ] En Vercel: agregar `SHEETS_WEBAPP_URL` (la URL) y `SHEETS_TOKEN` (mismo token del script) → **Redeploy**.
+- [ ] Probar: enviar el formulario → aparece una fila nueva en la hoja.
+
+### 2.b (Opcional) Llamada de Retell.ai vía n8n
 - [ ] **n8n — crear el workflow** (3 nodos) y **activarlo**:
   - [ ] **Webhook** (HTTP Method `POST`, Respond `Immediately`). Copiar su **Production URL**.
   - [ ] **Google Sheets → Append Row**: conectar la cuenta de Google, elegir la hoja `ZepaiMotors - Leads` (ID en sección 5), pestaña `Hoja 1`, y mapear columnas con `{{ $json.name }}`, `{{ $json.phone }}`, etc.
