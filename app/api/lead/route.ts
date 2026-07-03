@@ -57,6 +57,10 @@ export async function POST(req: Request) {
   const sheetsUrl = process.env.SHEETS_WEBAPP_URL;
   const sheetsToken = process.env.SHEETS_TOKEN ?? "";
   const n8nUrl = process.env.N8N_WEBHOOK_URL;
+  const ejServiceId = process.env.EMAILJS_SERVICE_ID;
+  const ejTemplateId = process.env.EMAILJS_TEMPLATE_ID;
+  const ejPublicKey = process.env.EMAILJS_PUBLIC_KEY;
+  const ejPrivateKey = process.env.EMAILJS_PRIVATE_KEY;
 
   const post = (url: string, payload: unknown) =>
     fetch(url, {
@@ -70,14 +74,40 @@ export async function POST(req: Request) {
     });
 
   // Send the lead to every configured destination in parallel so one failure
-  // never loses the lead: Google Sheets (storage) + n8n (Retell call).
+  // never loses the lead: Google Sheets (storage) + n8n (Retell call) + EmailJS (inbox alert).
   const targets: Promise<Response>[] = [];
   if (sheetsUrl) targets.push(post(sheetsUrl, { ...lead, token: sheetsToken }));
   if (n8nUrl) targets.push(post(n8nUrl, lead));
+  if (ejServiceId && ejTemplateId && ejPublicKey) {
+    targets.push(
+      post("https://api.emailjs.com/api/v1.0/email/send", {
+        service_id: ejServiceId,
+        template_id: ejTemplateId,
+        user_id: ejPublicKey,
+        // Private key bypasses EmailJS's browser-origin check for server calls.
+        accessToken: ejPrivateKey,
+        template_params: {
+          source: lead.source,
+          name: lead.name,
+          email: lead.email,
+          phone: lead.phone,
+          message: lead.message,
+          brand_model: lead.brandModel,
+          year: lead.year,
+          mileage: lead.mileage,
+          locale: lead.locale,
+          created_at: lead.createdAt,
+        },
+      })
+    );
+  }
 
   // Nothing configured yet (e.g. local without .env.local): don't break the form.
   if (targets.length === 0) {
-    console.warn("[lead] No destination configured (SHEETS_WEBAPP_URL / N8N_WEBHOOK_URL):", lead);
+    console.warn(
+      "[lead] No destination configured (SHEETS_WEBAPP_URL / N8N_WEBHOOK_URL / EMAILJS_*):",
+      lead
+    );
     return NextResponse.json({ ok: true, forwarded: false });
   }
 

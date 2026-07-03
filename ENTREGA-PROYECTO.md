@@ -55,6 +55,12 @@ Webhook de n8n   ──►  Google Sheets (agregar fila)
 - [ ] **Vercel — variable de entorno**: en Project → Settings → Environment Variables, agregar `N8N_WEBHOOK_URL` = la Production URL del webhook → **Redeploy**.
 - [ ] **Probar end-to-end**: enviar el formulario de Contacto en la web pública → debe aparecer una fila en la hoja y llegar la llamada al teléfono en segundos.
 
+### 2.c Correo por cada lead (EmailJS) — ver `ENVIAR-CORREO-LEADS.md`
+- [ ] Crear cuenta en EmailJS, un **Email Service** (Gmail/Outlook) y un **Template** con "To Email" = `info@zepaiagency.com` y las variables `{{name}} {{phone}} {{email}} {{message}} {{brand_model}} {{year}} {{mileage}} {{source}} {{locale}} {{created_at}}`.
+- [ ] Copiar **Service ID**, **Template ID**, **Public Key** y **Private Key**.
+- [ ] En Vercel: agregar `EMAILJS_SERVICE_ID`, `EMAILJS_TEMPLATE_ID`, `EMAILJS_PUBLIC_KEY`, `EMAILJS_PRIVATE_KEY` → **Redeploy**.
+- [ ] Probar: enviar el formulario → llega un correo a `info@zepaiagency.com`.
+
 ---
 
 ## 3. Datos y accesos que necesita el trabajador
