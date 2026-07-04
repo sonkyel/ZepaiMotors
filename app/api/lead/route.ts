@@ -58,7 +58,7 @@ export async function POST(req: Request) {
   const sheetsToken = process.env.SHEETS_TOKEN ?? "";
   const n8nUrl = process.env.N8N_WEBHOOK_URL;
   const resendKey = process.env.RESEND_API_KEY;
-  const resendTo = process.env.RESEND_TO_EMAIL || "info@zepaiagency.com";
+  const resendTo = process.env.RESEND_TO_EMAIL || "jordan@consultingzepai.com";
   const resendFrom = process.env.RESEND_FROM || "ZepaiMotors <onboarding@resend.dev>";
 
   const post = (url: string, payload: unknown, extraHeaders?: Record<string, string>) =>

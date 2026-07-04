@@ -3,7 +3,9 @@
 Documento de traspaso para continuar **exactamente** donde se quedó esta tarea. Léelo antes de tocar nada del dominio o de Resend.
 
 ## Objetivo
-Que cada vez que alguien rellene el formulario del sitio **ZepaiMotors** (Contacto o Vende tu auto), llegue un **correo a `info@zepaiagency.com`** con los datos del cliente.
+Que cada vez que alguien rellene el formulario del sitio **ZepaiMotors** (Contacto o Vende tu auto), llegue un **correo a `jordan@consultingzepai.com`** con los datos del cliente.
+
+> Nota: el destino se cambió de `info@zepaiagency.com` a `jordan@consultingzepai.com`. Esto **no requiere verificar ningún dominio adicional**: en Resend, la verificación de dominio es solo del lado del **remitente** (de dónde sale el correo), no del destinatario. `jordan@consultingzepai.com` puede recibir sin tocar su DNS ni lo que tengan configurado en Smartlead.ai.
 
 ---
 
@@ -37,7 +39,7 @@ Si se agrega el SPF de Resend en la raíz, **se duplicaría el registro SPF** (s
 Verificar **`mail.zepaiagency.com`** (subdominio) en vez de la raíz. Ventajas:
 - No toca ningún registro existente (Google Workspace queda intacto).
 - El remitente de los leads quedará como `ZepaiMotors <leads@mail.zepaiagency.com>`.
-- El **destino** sigue siendo `info@zepaiagency.com` — eso no cambia, solo cambia el remitente técnico.
+- El **destino** de los avisos es `jordan@consultingzepai.com` (ya configurado en el código y en Vercel como `RESEND_TO_EMAIL`); esto es independiente de qué dominio se verifique como remitente.
 
 ---
 
@@ -53,7 +55,7 @@ Verificar **`mail.zepaiagency.com`** (subdominio) en vez de la raíz. Ventajas:
 5. Cuando el dominio diga **"Verified"**:
    - En Vercel → **Settings → Environment Variables**, crear/editar **`RESEND_FROM`** = `ZepaiMotors <leads@mail.zepaiagency.com>`
    - **Redeploy** el proyecto.
-6. **Probar de verdad:** enviar el formulario de Contacto en https://zepai-motors.vercel.app/contacto y confirmar que esta vez **sí llega** el correo a `info@zepaiagency.com` (revisar también la carpeta de spam).
+6. **Probar de verdad:** enviar el formulario de Contacto en https://zepai-motors.vercel.app/contacto y confirmar que esta vez **sí llega** el correo a `jordan@consultingzepai.com` (revisar también la carpeta de spam).
 
 ---
 

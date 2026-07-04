@@ -55,11 +55,11 @@ Webhook de n8n   ──►  Google Sheets (agregar fila)
 - [ ] **Vercel — variable de entorno**: en Project → Settings → Environment Variables, agregar `N8N_WEBHOOK_URL` = la Production URL del webhook → **Redeploy**.
 - [ ] **Probar end-to-end**: enviar el formulario de Contacto en la web pública → debe aparecer una fila en la hoja y llegar la llamada al teléfono en segundos.
 
-### 2.c Correo por cada lead (Resend) — ver `ENVIAR-CORREO-LEADS.md`
-- [ ] Crear cuenta en Resend **usando el correo `info@zepaiagency.com`** (así se puede enviar sin verificar dominio).
-- [ ] Crear una **API Key** (Sending access) y copiarla.
-- [ ] En Vercel: agregar `RESEND_API_KEY` → **Redeploy**. (`RESEND_TO_EMAIL` y `RESEND_FROM` son opcionales, ya tienen buen valor por defecto.)
-- [ ] Probar: enviar el formulario → llega un correo a `info@zepaiagency.com`.
+### 2.c Correo por cada lead (Resend) — ver `ENVIAR-CORREO-LEADS.md` y `PENDIENTE-CORREO-RESEND.md`
+- [x] Cuenta Resend creada, **API Key** guardada en Vercel (`RESEND_API_KEY`).
+- [x] Destino configurado: `RESEND_TO_EMAIL` = `jordan@consultingzepai.com`.
+- [ ] **Falta verificar un dominio remitente** (`mail.zepaiagency.com`, ver detalle completo en `PENDIENTE-CORREO-RESEND.md`) — sin esto, Resend acepta la petición pero no entrega el correo.
+- [ ] Probar: enviar el formulario → llega un correo a `jordan@consultingzepai.com`.
 
 ---
 
