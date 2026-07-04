@@ -68,21 +68,25 @@ export async function POST(req: Request) {
       headers: { "Content-Type": "application/json", ...extraHeaders },
       body: JSON.stringify(payload),
       signal: AbortSignal.timeout(10000),
-    }).then((r) => {
-      if (!r.ok) throw new Error(`status_${r.status}`);
+    }).then(async (r) => {
+      if (!r.ok) {
+        const bodyText = await r.text().catch(() => "");
+        throw new Error(`status_${r.status}: ${bodyText.slice(0, 300)}`);
+      }
       return r;
     });
 
   // Send the lead to every configured destination in parallel so one failure
   // never loses the lead: Google Sheets (storage) + n8n (Retell call) + Resend (inbox alert).
-  const targets: Promise<Response>[] = [];
-  if (sheetsUrl) targets.push(post(sheetsUrl, { ...lead, token: sheetsToken }));
-  if (n8nUrl) targets.push(post(n8nUrl, lead));
+  const targets: { label: string; promise: Promise<Response> }[] = [];
+  if (sheetsUrl) targets.push({ label: "sheets", promise: post(sheetsUrl, { ...lead, token: sheetsToken }) });
+  if (n8nUrl) targets.push({ label: "n8n", promise: post(n8nUrl, lead) });
   if (resendKey && resendTemplateId) {
     // Published dashboard template (resend.com/templates). Variable names
     // must match exactly what the template uses, e.g. {{{LEAD_NAME}}}.
-    targets.push(
-      post(
+    targets.push({
+      label: "resend_template",
+      promise: post(
         "https://api.resend.com/emails",
         {
           from: resendFrom,
@@ -104,8 +108,8 @@ export async function POST(req: Request) {
           },
         },
         { Authorization: `Bearer ${resendKey}` }
-      )
-    );
+      ),
+    });
   } else if (resendKey) {
     // Fallback: no dashboard template configured yet, send inline HTML.
     const html = `
@@ -119,8 +123,9 @@ export async function POST(req: Request) {
       <p><b>Idioma:</b> ${lead.locale}</p>
       <p><b>Fecha:</b> ${lead.createdAt}</p>
     `;
-    targets.push(
-      post(
+    targets.push({
+      label: "resend_html",
+      promise: post(
         "https://api.resend.com/emails",
         {
           from: resendFrom,
@@ -129,8 +134,8 @@ export async function POST(req: Request) {
           html,
         },
         { Authorization: `Bearer ${resendKey}` }
-      )
-    );
+      ),
+    });
   }
 
   // Nothing configured yet (e.g. local without .env.local): don't break the form.
@@ -142,7 +147,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true, forwarded: false });
   }
 
-  const results = await Promise.allSettled(targets);
+  const results = await Promise.allSettled(targets.map((t) => t.promise));
+  results.forEach((r, i) => {
+    if (r.status === "rejected") {
+      console.error(`[lead] Destination "${targets[i].label}" failed:`, r.reason);
+    } else {
+      console.log(`[lead] Destination "${targets[i].label}" ok`);
+    }
+  });
+
   const anyOk = results.some((r) => r.status === "fulfilled");
   if (!anyOk) {
     return NextResponse.json({ ok: false, error: "delivery_failed" }, { status: 502 });
