@@ -58,9 +58,18 @@ export async function POST(req: Request) {
   const sheetsToken = process.env.SHEETS_TOKEN ?? "";
   const n8nUrl = process.env.N8N_WEBHOOK_URL;
   const resendKey = process.env.RESEND_API_KEY;
-  const resendTo = process.env.RESEND_TO_EMAIL || "jordan@consultingzepai.com";
+  const resendTo = process.env.RESEND_TO_EMAIL || "info@zepaiagency.com";
   const resendFrom = process.env.RESEND_FROM || "ZepaiMotors <onboarding@resend.dev>";
   const resendTemplateId = process.env.RESEND_TEMPLATE_ID;
+
+  console.log("[lead] env presence:", {
+    sheetsUrl: Boolean(sheetsUrl),
+    n8nUrl: Boolean(n8nUrl),
+    resendKey: Boolean(resendKey),
+    resendTo,
+    resendFrom,
+    resendTemplateId: Boolean(resendTemplateId),
+  });
 
   const post = (url: string, payload: unknown, extraHeaders?: Record<string, string>) =>
     fetch(url, {
