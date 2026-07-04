@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { MapPin, Clock, Phone, EnvelopeSimple, WhatsappLogo } from "@phosphor-icons/react";
 import { useLang } from "../LanguageProvider";
 import { business } from "@/lib/i18n";
+import { vehicles, getVehicle } from "@/lib/vehicles";
 import { PageHeader } from "../PageHeader";
 import { Reveal } from "../Reveal";
 
@@ -12,8 +14,29 @@ type Status = "idle" | "sending" | "sent" | "error";
 export function ContactView() {
   const { t, lang } = useLang();
   const f = t.contact.form;
+  const searchParams = useSearchParams();
   const [status, setStatus] = useState<Status>("idle");
-  const [values, setValues] = useState({ name: "", email: "", phone: "", message: "", company: "" });
+  const [values, setValues] = useState({ name: "", email: "", phone: "", message: "", company: "", brandModel: "" });
+  const [vehicleChoice, setVehicleChoice] = useState("");
+
+  useEffect(() => {
+    const auto = searchParams.get("auto");
+    const found = auto ? getVehicle(auto) : undefined;
+    if (found) {
+      setVehicleChoice(found.slug);
+      setValues((v) => ({ ...v, brandModel: `${found.brand} ${found.model}` }));
+    }
+  }, [searchParams]);
+
+  function onVehicleChange(slug: string) {
+    setVehicleChoice(slug);
+    if (slug === "" || slug === "other") {
+      setValues((v) => ({ ...v, brandModel: "" }));
+      return;
+    }
+    const found = getVehicle(slug);
+    setValues((v) => ({ ...v, brandModel: found ? `${found.brand} ${found.model}` : "" }));
+  }
 
   const invalid = {
     name: status === "error" && values.name.trim() === "",
@@ -126,6 +149,33 @@ export function ContactView() {
                     <input id="c-phone" type="tel" value={values.phone} onChange={(e) => setValues((v) => ({ ...v, phone: e.target.value }))} placeholder={f.phonePh} className={`${field} border-line`} />
                   </div>
                 </div>
+                <div className="mt-5 flex flex-col gap-2">
+                  <label htmlFor="c-vehicle" className="text-[13px] font-medium text-fog">{f.vehicleLabel}</label>
+                  <select
+                    id="c-vehicle"
+                    value={vehicleChoice}
+                    onChange={(e) => onVehicleChange(e.target.value)}
+                    className={`${field} border-line`}
+                  >
+                    <option value="">{f.vehicleDefaultOption}</option>
+                    {vehicles.map((v) => (
+                      <option key={v.slug} value={v.slug}>{`${v.brand} ${v.model} (${v.year})`}</option>
+                    ))}
+                    <option value="other">{f.vehicleOtherOption}</option>
+                  </select>
+                </div>
+                {vehicleChoice === "other" && (
+                  <div className="mt-5 flex flex-col gap-2">
+                    <label htmlFor="c-vehicle-other" className="text-[13px] font-medium text-fog">{f.vehicleOtherPh}</label>
+                    <input
+                      id="c-vehicle-other"
+                      value={values.brandModel}
+                      onChange={(e) => setValues((v) => ({ ...v, brandModel: e.target.value }))}
+                      placeholder={f.vehicleOtherPh}
+                      className={`${field} border-line`}
+                    />
+                  </div>
+                )}
                 <div className="mt-5 flex flex-col gap-2">
                   <label htmlFor="c-email" className="text-[13px] font-medium text-fog">{f.email}</label>
                   <input id="c-email" type="email" value={values.email} onChange={(e) => setValues((v) => ({ ...v, email: e.target.value }))} placeholder={f.emailPh} className={`${field} ${invalid.email ? "border-rev" : "border-line"}`} />

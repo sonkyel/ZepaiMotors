@@ -66,7 +66,7 @@ export function VehicleDetail({ vehicle: v, related }: { vehicle: Vehicle; relat
               </div>
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <Link href="/contacto" className="flex-1 bg-rev px-6 py-3.5 text-center text-[14px] font-semibold uppercase tracking-wide text-white transition-transform duration-200 hover:bg-rev-soft active:scale-[0.98]">
+                <Link href={`/contacto?auto=${v.slug}`} className="flex-1 bg-rev px-6 py-3.5 text-center text-[14px] font-semibold uppercase tracking-wide text-white transition-transform duration-200 hover:bg-rev-soft active:scale-[0.98]">
                   {t.vehicle.inquire}
                 </Link>
                 <a
