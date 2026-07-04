@@ -55,8 +55,8 @@ Verificar **`mail.zepaiagency.com`** (subdominio) en vez de la raíz. Ventajas:
 4. [x] `RESEND_FROM` = `ZepaiMotors <leads@mail.zepaiagency.com>` puesto en Vercel → Redeploy hecho.
 5. [x] Lead de prueba enviado a producción → `{"ok":true,"forwarded":true}`.
 
-## ✅ Esta tarea está COMPLETA
-Solo falta que el dueño confirme que el correo de prueba llegó a `jordan@consultingzepai.com` (revisar también spam). Si no llegó pese a que la API responde bien, revisar en el dashboard de Resend → **Emails** (logs) el estado de entrega de ese envío.
+## ✅ Esta tarea está COMPLETA Y CONFIRMADA
+El correo de prueba llegó a `jordan@consultingzepai.com` (cayó en **spam**, algo normal y esperado en un dominio de envío recién verificado, sin historial todavía). Marcarlo como "No es spam" ayuda a que los próximos lleguen directo a la bandeja principal; esto mejora solo con el tiempo a medida que se envían más correos legítimos.
 
 ---
 
