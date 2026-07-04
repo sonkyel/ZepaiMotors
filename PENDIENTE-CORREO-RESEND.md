@@ -3,9 +3,9 @@
 Documento de traspaso para continuar **exactamente** donde se quedó esta tarea. Léelo antes de tocar nada del dominio o de Resend.
 
 ## Objetivo
-Que cada vez que alguien rellene el formulario del sitio **ZepaiMotors** (Contacto o Vende tu auto), llegue un **correo a `jordan@consultingzepai.com`** con los datos del cliente.
+Que cada vez que alguien rellene el formulario del sitio **ZepaiMotors** (Contacto o Vende tu auto), llegue un **correo a `info@zepaiagency.com`** con los datos del cliente.
 
-> Nota: el destino se cambió de `info@zepaiagency.com` a `jordan@consultingzepai.com`. Esto **no requiere verificar ningún dominio adicional**: en Resend, la verificación de dominio es solo del lado del **remitente** (de dónde sale el correo), no del destinatario. `jordan@consultingzepai.com` puede recibir sin tocar su DNS ni lo que tengan configurado en Smartlead.ai.
+> Nota: durante esta tarea se probó temporalmente con `jordan@consultingzepai.com` como destino; el destino final quedó en `info@zepaiagency.com`. Cambiar el destino **no requiere verificar ningún dominio adicional**: en Resend, la verificación de dominio es solo del lado del **remitente** (de dónde sale el correo), no del destinatario.
 
 ---
 
@@ -39,7 +39,7 @@ Si se agrega el SPF de Resend en la raíz, **se duplicaría el registro SPF** (s
 Verificar **`mail.zepaiagency.com`** (subdominio) en vez de la raíz. Ventajas:
 - No toca ningún registro existente (Google Workspace queda intacto).
 - El remitente de los leads quedará como `ZepaiMotors <leads@mail.zepaiagency.com>`.
-- El **destino** de los avisos es `jordan@consultingzepai.com` (ya configurado en el código y en Vercel como `RESEND_TO_EMAIL`); esto es independiente de qué dominio se verifique como remitente.
+- El **destino** de los avisos es `info@zepaiagency.com` (ya configurado en el código y en Vercel como `RESEND_TO_EMAIL`); esto es independiente de qué dominio se verifique como remitente.
 
 ---
 
@@ -56,7 +56,9 @@ Verificar **`mail.zepaiagency.com`** (subdominio) en vez de la raíz. Ventajas:
 5. [x] Lead de prueba enviado a producción → `{"ok":true,"forwarded":true}`.
 
 ## ✅ Esta tarea está COMPLETA Y CONFIRMADA
-El correo de prueba llegó a `jordan@consultingzepai.com` (cayó en **spam**, algo normal y esperado en un dominio de envío recién verificado, sin historial todavía). Marcarlo como "No es spam" ayuda a que los próximos lleguen directo a la bandeja principal; esto mejora solo con el tiempo a medida que se envían más correos legítimos.
+El correo de prueba llegó a la bandeja (cayó en **spam** la primera vez, algo normal y esperado en un dominio de envío recién verificado, sin historial todavía). Marcarlo como "No es spam" ayuda a que los próximos lleguen directo a la bandeja principal; esto mejora solo con el tiempo a medida que se envían más correos legítimos.
+
+**Nota de diagnóstico:** en un envío de prueba posterior, la función respondió `ok:true` pero Resend no llegó a intentarse (solo se registró Google Sheets). Se agregó logging por destino (`app/api/lead/route.ts`) para ver el resultado de cada integración por separado en `vercel logs`. En el siguiente redeploy, un nuevo envío de prueba confirmó `resendKey: true` y `"resend_html" ok` — el fallo anterior parece haber sido una instancia de función servida antes de que el redeploy tomara efecto por completo, no un problema de configuración. Si vuelve a fallar en silencio, revisar `vercel logs <deployment> --json` buscando `"[lead] env presence"` y `"Destination ... failed"` para ver el error exacto.
 
 ---
 

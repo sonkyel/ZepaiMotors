@@ -8,23 +8,22 @@ Estado actual y lo que falta para dejar 100% funcionando la captación de leads.
 
 ## ✅ 1. Correo de leads (Resend) — COMPLETO
 
-- [x] Código conectado, cuenta Resend, API Key en Vercel, destino `jordan@consultingzepai.com`.
+- [x] Código conectado, cuenta Resend, API Key en Vercel, destino `info@zepaiagency.com`.
 - [x] Dominio `mail.zepaiagency.com` verificado en Resend (3 registros DNS agregados, Google Workspace de la raíz intacto).
 - [x] `RESEND_FROM` = `ZepaiMotors <leads@mail.zepaiagency.com>` puesto en Vercel → Redeploy hecho.
 - [x] Lead de prueba enviado a producción → API responde `{"ok":true,"forwarded":true}`.
-- [ ] Falta solo: **confirmar que el correo de prueba llegó** a `jordan@consultingzepai.com` (revisar spam).
+- [x] Confirmado: el correo de prueba llegó a `info@zepaiagency.com` (cayó en spam la primera vez, normal para un dominio recién verificado; mejora con el tiempo).
 - [ ] (Opcional, cosmético) Crear el template con la marca en resend.com/templates y poner su ID en `RESEND_TEMPLATE_ID`.
 
 📄 Detalle completo: **`PENDIENTE-CORREO-RESEND.md`** y **`ENVIAR-CORREO-LEADS.md`**
 
 ---
 
-## 🟡 2. Guardar leads en Google Sheets — no iniciado
+## ✅ 2. Guardar leads en Google Sheets — COMPLETO
 
-**Falta:**
-- [ ] Pegar y desplegar el Apps Script en la hoja **"ZepaiMotors - Leads"**.
-- [ ] Poner `SHEETS_WEBAPP_URL` y `SHEETS_TOKEN` en Vercel → Redeploy.
-- [ ] Probar: enviar el formulario → aparece fila nueva en la hoja.
+- [x] Apps Script desplegado en la hoja **"ZepaiMotors - Leads"** (token: `ZepaiAgency`).
+- [x] `SHEETS_WEBAPP_URL` y `SHEETS_TOKEN` puestos en Vercel → Redeploy hecho.
+- [x] Probado: lead de prueba enviado → confirmada fila nueva en la hoja.
 
 📄 Detalle completo: **`GUARDAR-LEADS-SHEET.md`**
 

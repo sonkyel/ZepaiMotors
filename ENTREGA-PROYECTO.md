@@ -57,9 +57,9 @@ Webhook de n8n   ──►  Google Sheets (agregar fila)
 
 ### 2.c Correo por cada lead (Resend) — ver `ENVIAR-CORREO-LEADS.md` y `PENDIENTE-CORREO-RESEND.md`
 - [x] Cuenta Resend creada, **API Key** guardada en Vercel (`RESEND_API_KEY`).
-- [x] Destino configurado: `RESEND_TO_EMAIL` = `jordan@consultingzepai.com`.
+- [x] Destino configurado: `RESEND_TO_EMAIL` = `info@zepaiagency.com`.
 - [ ] **Falta verificar un dominio remitente** (`mail.zepaiagency.com`, ver detalle completo en `PENDIENTE-CORREO-RESEND.md`) — sin esto, Resend acepta la petición pero no entrega el correo.
-- [ ] Probar: enviar el formulario → llega un correo a `jordan@consultingzepai.com`.
+- [ ] Probar: enviar el formulario → llega un correo a `info@zepaiagency.com`.
 
 ---
 

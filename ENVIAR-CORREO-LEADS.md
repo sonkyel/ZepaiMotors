@@ -1,9 +1,9 @@
 # Recibir un correo por cada lead (Resend)
 
-Con esto, cada vez que alguien rellena el formulario de **Contacto** o **Vende tu auto**, te llega un **correo a jordan@consultingzepai.com** con los datos del cliente. Es independiente de Google Sheets y de n8n: pueden convivir los tres.
+Con esto, cada vez que alguien rellena el formulario de **Contacto** o **Vende tu auto**, te llega un **correo a info@zepaiagency.com** con los datos del cliente. Es independiente de Google Sheets y de n8n: pueden convivir los tres.
 
 ```
-Formulario → /api/lead (web) → Resend → correo a jordan@consultingzepai.com
+Formulario → /api/lead (web) → Resend → correo a info@zepaiagency.com
 ```
 
 Usamos **Resend** (no EmailJS) porque tiene un plan gratis mucho más amplio (3,000 correos/mes) y está pensado justo para esto: enviar correos desde el servidor de una web.
@@ -24,7 +24,7 @@ Usamos **Resend** (no EmailJS) porque tiene un plan gratis mucho más amplio (3,
 1. Vercel → tu proyecto → **Settings → Environment Variables**.
 2. Agrega (entorno Production, y Preview si quieres):
    - **`RESEND_API_KEY`** = la key `re_...` del Paso 2.
-   - (Opcional) **`RESEND_TO_EMAIL`** = `jordan@consultingzepai.com` (si no la pones, ya usa ese valor por defecto).
+   - (Opcional) **`RESEND_TO_EMAIL`** = `info@zepaiagency.com` (si no la pones, ya usa ese valor por defecto).
 3. **Redeploy** el proyecto para que tome la variable.
 
 ## Paso 4 — Verificar un dominio (OBLIGATORIO para que se entregue el correo)
@@ -70,7 +70,7 @@ Por defecto, el código ya genera un correo HTML simple sin necesidad de nada m�
 
 ## Paso 6 — Probar
 1. Envía el formulario de **Contacto** en tu sitio en producción.
-2. En segundos debe llegar un correo a **jordan@consultingzepai.com** (o el que pongas en `RESEND_TO_EMAIL`) con: fuente, nombre, teléfono, email, mensaje, vehículo, año, kilometraje, idioma y fecha.
+2. En segundos debe llegar un correo a **info@zepaiagency.com** (o el que pongas en `RESEND_TO_EMAIL`) con: fuente, nombre, teléfono, email, mensaje, vehículo, año, kilometraje, idioma y fecha.
 3. Revisa también la carpeta de **spam** la primera vez.
 
 ---
