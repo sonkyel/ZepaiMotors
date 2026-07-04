@@ -60,6 +60,7 @@ export async function POST(req: Request) {
   const resendKey = process.env.RESEND_API_KEY;
   const resendTo = process.env.RESEND_TO_EMAIL || "jordan@consultingzepai.com";
   const resendFrom = process.env.RESEND_FROM || "ZepaiMotors <onboarding@resend.dev>";
+  const resendTemplateId = process.env.RESEND_TEMPLATE_ID;
 
   const post = (url: string, payload: unknown, extraHeaders?: Record<string, string>) =>
     fetch(url, {
@@ -77,7 +78,36 @@ export async function POST(req: Request) {
   const targets: Promise<Response>[] = [];
   if (sheetsUrl) targets.push(post(sheetsUrl, { ...lead, token: sheetsToken }));
   if (n8nUrl) targets.push(post(n8nUrl, lead));
-  if (resendKey) {
+  if (resendKey && resendTemplateId) {
+    // Published dashboard template (resend.com/templates). Variable names
+    // must match exactly what the template uses, e.g. {{{LEAD_NAME}}}.
+    targets.push(
+      post(
+        "https://api.resend.com/emails",
+        {
+          from: resendFrom,
+          to: [resendTo],
+          template: {
+            id: resendTemplateId,
+            variables: {
+              LEAD_SOURCE: lead.source,
+              LEAD_NAME: lead.name,
+              LEAD_PHONE: lead.phone,
+              LEAD_EMAIL: lead.email,
+              LEAD_MESSAGE: lead.message,
+              LEAD_BRAND_MODEL: lead.brandModel,
+              LEAD_YEAR: lead.year,
+              LEAD_MILEAGE: lead.mileage,
+              LEAD_LOCALE: lead.locale,
+              LEAD_CREATED_AT: lead.createdAt,
+            },
+          },
+        },
+        { Authorization: `Bearer ${resendKey}` }
+      )
+    );
+  } else if (resendKey) {
+    // Fallback: no dashboard template configured yet, send inline HTML.
     const html = `
       <h2>Nuevo lead (${lead.source})</h2>
       <p><b>Nombre:</b> ${lead.name}</p>

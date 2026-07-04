@@ -38,7 +38,37 @@ Sin este paso, Resend acepta la petición pero **no entrega** el correo.
 4. Espera a que Resend marque el dominio como **"Verified"** (minutos a horas).
 5. En Vercel, agrega/edita **`RESEND_FROM`** = `ZepaiMotors <leads@tudominio-verificado.com>` → **Redeploy**.
 
-## Paso 5 — Probar
+## Paso 5 — (Opcional) Crear un template con la marca ZepaiMotors
+Por defecto, el código ya genera un correo HTML simple sin necesidad de nada más. Si prefieres diseñar el correo visualmente desde el dashboard de Resend:
+
+1. Entra a **https://resend.com/templates → Create template**.
+2. Configura:
+   - **Subject:** `Nuevo lead ({{{LEAD_SOURCE}}}): {{{LEAD_NAME}}}`
+   - **Contenido (HTML)**, con los colores de la marca (rojo `#e11122`, fondo oscuro `#0b0b0d`):
+     ```html
+     <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto;">
+       <div style="background:#0b0b0d; padding: 20px; text-align:center;">
+         <span style="color:#f5f4f2; font-size:20px; font-weight:bold; letter-spacing:1px;">ZEPAIMOTORS</span>
+         <span style="color:#e11122;"> ●</span>
+       </div>
+       <div style="padding: 24px; border: 1px solid #eee;">
+         <h2 style="color:#e11122; margin-top:0;">Nuevo lead ({{{LEAD_SOURCE}}})</h2>
+         <p><b>Nombre:</b> {{{LEAD_NAME}}}</p>
+         <p><b>Teléfono:</b> {{{LEAD_PHONE}}}</p>
+         <p><b>Email:</b> {{{LEAD_EMAIL}}}</p>
+         <p><b>Mensaje:</b> {{{LEAD_MESSAGE}}}</p>
+         <p><b>Vehículo:</b> {{{LEAD_BRAND_MODEL}}} ({{{LEAD_YEAR}}})</p>
+         <p><b>Kilometraje:</b> {{{LEAD_MILEAGE}}}</p>
+         <p style="color:#888; font-size:12px;">Idioma: {{{LEAD_LOCALE}}} · {{{LEAD_CREATED_AT}}}</p>
+       </div>
+     </div>
+     ```
+   - Las variables usan **triple llave** `{{{ }}}` (no doble). Deben llamarse **exactamente así** (`LEAD_SOURCE`, `LEAD_NAME`, etc.), porque son las que manda el código.
+3. Botón **"Publish"** (mientras esté en borrador, no se puede usar).
+4. Copia el **Template ID**.
+5. En Vercel, agrega **`RESEND_TEMPLATE_ID`** = ese ID → **Redeploy**. A partir de ahí, el correo usará el diseño del template en vez del HTML simple.
+
+## Paso 6 — Probar
 1. Envía el formulario de **Contacto** en tu sitio en producción.
 2. En segundos debe llegar un correo a **jordan@consultingzepai.com** (o el que pongas en `RESEND_TO_EMAIL`) con: fuente, nombre, teléfono, email, mensaje, vehículo, año, kilometraje, idioma y fecha.
 3. Revisa también la carpeta de **spam** la primera vez.
