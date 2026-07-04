@@ -51,11 +51,12 @@ Verificar **`mail.zepaiagency.com`** (subdominio) en vez de la raíz. Ventajas:
    - `send.mail` MX → `feedback-smtp.sa-east-1.amazonses.com` (prioridad 10)
    - `send.mail` TXT → `v=spf1 include:amazonses.com ~all`
    - El Google Workspace de la raíz (`zepaiagency.com`) quedó intacto, no se tocó nada.
-3. [ ] **Esperar/confirmar "Verified" en Resend** (Domains → mail.zepaiagency.com). Puede tardar minutos u horas en propagar.
-4. [ ] Cuando diga **"Verified"**:
-   - En Vercel → **Settings → Environment Variables**, crear/editar **`RESEND_FROM`** = `ZepaiMotors <leads@mail.zepaiagency.com>`
-   - **Redeploy** el proyecto.
-5. [ ] **Probar de verdad:** enviar el formulario de Contacto en https://zepai-motors.vercel.app/contacto y confirmar que esta vez **sí llega** el correo a `jordan@consultingzepai.com` (revisar también la carpeta de spam).
+3. [x] **Dominio verificado en Resend** ("Verified").
+4. [x] `RESEND_FROM` = `ZepaiMotors <leads@mail.zepaiagency.com>` puesto en Vercel → Redeploy hecho.
+5. [x] Lead de prueba enviado a producción → `{"ok":true,"forwarded":true}`.
+
+## ✅ Esta tarea está COMPLETA
+Solo falta que el dueño confirme que el correo de prueba llegó a `jordan@consultingzepai.com` (revisar también spam). Si no llegó pese a que la API responde bien, revisar en el dashboard de Resend → **Emails** (logs) el estado de entrega de ese envío.
 
 ---
 

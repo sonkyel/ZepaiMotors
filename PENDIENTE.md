@@ -6,20 +6,14 @@ Estado actual y lo que falta para dejar 100% funcionando la captación de leads.
 
 ---
 
-## 🔴 1. Correo de leads (Resend) — a medio terminar, es lo más urgente
+## ✅ 1. Correo de leads (Resend) — COMPLETO
 
-**Ya hecho:**
-- [x] Código conectado (`/api/lead` ya manda cada lead a Resend).
-- [x] Cuenta Resend + API Key guardada en Vercel (`RESEND_API_KEY`).
-- [x] Destino configurado: `jordan@consultingzepai.com` (`RESEND_TO_EMAIL`).
-- [x] Soporte de template de marca (opcional, `RESEND_TEMPLATE_ID`).
-
-**Falta (esto es lo que bloquea que llegue el correo de verdad):**
-- [x] Dominio `mail.zepaiagency.com` agregado en Resend y sus 3 registros DNS ya puestos (MX + 2 TXT), sin tocar el Google Workspace de la raíz.
-- [ ] Esperar/confirmar que Resend marque `mail.zepaiagency.com` como **"Verified"**.
-- [ ] Cuando diga "Verified": poner `RESEND_FROM = ZepaiMotors <leads@mail.zepaiagency.com>` en Vercel → Redeploy.
-- [ ] Probar: enviar el formulario de Contacto → confirmar que llega el correo a `jordan@consultingzepai.com`.
-- [ ] (Opcional) Crear el template con la marca en resend.com/templates y poner su ID en `RESEND_TEMPLATE_ID`.
+- [x] Código conectado, cuenta Resend, API Key en Vercel, destino `jordan@consultingzepai.com`.
+- [x] Dominio `mail.zepaiagency.com` verificado en Resend (3 registros DNS agregados, Google Workspace de la raíz intacto).
+- [x] `RESEND_FROM` = `ZepaiMotors <leads@mail.zepaiagency.com>` puesto en Vercel → Redeploy hecho.
+- [x] Lead de prueba enviado a producción → API responde `{"ok":true,"forwarded":true}`.
+- [ ] Falta solo: **confirmar que el correo de prueba llegó** a `jordan@consultingzepai.com` (revisar spam).
+- [ ] (Opcional, cosmético) Crear el template con la marca en resend.com/templates y poner su ID en `RESEND_TEMPLATE_ID`.
 
 📄 Detalle completo: **`PENDIENTE-CORREO-RESEND.md`** y **`ENVIAR-CORREO-LEADS.md`**
 
