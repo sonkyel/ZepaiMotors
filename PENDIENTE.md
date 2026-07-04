@@ -15,9 +15,8 @@ Estado actual y lo que falta para dejar 100% funcionando la captación de leads.
 - [x] Soporte de template de marca (opcional, `RESEND_TEMPLATE_ID`).
 
 **Falta (esto es lo que bloquea que llegue el correo de verdad):**
-- [ ] Verificar el dominio **`mail.zepaiagency.com`** en Resend (Domains → Add Domain).
-  - ⚠️ NO usar `zepaiagency.com` a secas — esa raíz ya tiene Google Workspace real (Gmail), y agregar el SPF/MX de Resend ahí rompería la recepción de correo del negocio. Por eso se usa el subdominio `mail.zepaiagency.com`, que no toca nada existente.
-  - Resend da unos registros DNS → agregarlos (el dominio está en Vercel, se puede hacer por `vercel dns add` o desde Vercel → Domains → DNS Records).
+- [x] Dominio `mail.zepaiagency.com` agregado en Resend y sus 3 registros DNS ya puestos (MX + 2 TXT), sin tocar el Google Workspace de la raíz.
+- [ ] Esperar/confirmar que Resend marque `mail.zepaiagency.com` como **"Verified"**.
 - [ ] Cuando diga "Verified": poner `RESEND_FROM = ZepaiMotors <leads@mail.zepaiagency.com>` en Vercel → Redeploy.
 - [ ] Probar: enviar el formulario de Contacto → confirmar que llega el correo a `jordan@consultingzepai.com`.
 - [ ] (Opcional) Crear el template con la marca en resend.com/templates y poner su ID en `RESEND_TEMPLATE_ID`.

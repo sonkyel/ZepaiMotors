@@ -45,17 +45,17 @@ Verificar **`mail.zepaiagency.com`** (subdominio) en vez de la raíz. Ventajas:
 
 ## Pasos que faltan (en orden)
 
-1. **Entrar a https://resend.com/domains → Add Domain**
-   - Escribir exactamente: **`mail.zepaiagency.com`** (NO `zepaiagency.com` a secas).
-2. Resend mostrará una tabla de registros DNS a agregar (normalmente 1 **MX** + 2-3 **TXT** para DKIM/SPF, a veces un **DMARC**). Copiar esa tabla completa (no son datos secretos, se pueden compartir sin problema).
-3. **Agregar esos registros al DNS de `zepaiagency.com`** (el subdominio se define dentro de la misma zona):
-   - Por CLI (si tienes acceso a la cuenta de Vercel): `vercel dns add zepaiagency.com <name> <type> <value>`, donde `<name>` debe quedar bajo `mail` (ej. `mail` o `resend._domainkey.mail`, según lo que pida Resend exactamente).
-   - O desde el dashboard: Vercel → proyecto → **Domains → zepaiagency.com → DNS Records → Add**.
-4. Volver a Resend y esperar/pulsar **"Verify"** (puede tardar minutos u horas en propagar).
-5. Cuando el dominio diga **"Verified"**:
+1. [x] **Dominio agregado en Resend:** `mail.zepaiagency.com`.
+2. [x] **Registros DNS agregados** (vía `vercel dns add`, confirmados con `vercel dns ls zepaiagency.com`):
+   - `resend._domainkey.mail` TXT (DKIM)
+   - `send.mail` MX → `feedback-smtp.sa-east-1.amazonses.com` (prioridad 10)
+   - `send.mail` TXT → `v=spf1 include:amazonses.com ~all`
+   - El Google Workspace de la raíz (`zepaiagency.com`) quedó intacto, no se tocó nada.
+3. [ ] **Esperar/confirmar "Verified" en Resend** (Domains → mail.zepaiagency.com). Puede tardar minutos u horas en propagar.
+4. [ ] Cuando diga **"Verified"**:
    - En Vercel → **Settings → Environment Variables**, crear/editar **`RESEND_FROM`** = `ZepaiMotors <leads@mail.zepaiagency.com>`
    - **Redeploy** el proyecto.
-6. **Probar de verdad:** enviar el formulario de Contacto en https://zepai-motors.vercel.app/contacto y confirmar que esta vez **sí llega** el correo a `jordan@consultingzepai.com` (revisar también la carpeta de spam).
+5. [ ] **Probar de verdad:** enviar el formulario de Contacto en https://zepai-motors.vercel.app/contacto y confirmar que esta vez **sí llega** el correo a `jordan@consultingzepai.com` (revisar también la carpeta de spam).
 
 ---
 
