@@ -29,13 +29,19 @@ Estado actual y lo que falta para dejar 100% funcionando la captación de leads.
 
 ---
 
-## 🟢 3. Llamada de Retell.ai vía n8n — opcional, no iniciado
+## 🟢 3. Llamada de Retell.ai vía n8n — en progreso, para que lo termine el socio
 
-**Falta (solo si se quiere esta parte):**
-- [ ] Crear el workflow en n8n (Webhook → Google Sheets → HTTP a Retell).
+**Objetivo:** cuando alguien llena el formulario, Retell llama **al dueño** (no al cliente) a avisarle del lead.
+
+**Hallazgo importante:** ya existe un workflow "zepaimotors-postcall" en n8n, pero **no sirve para esto** — es la mitad "después de la llamada" de un sistema distinto (Retell → n8n cuando Retell ya analizó una conversación con un cliente). No se toca. Hace falta un workflow **nuevo y separado**.
+
+**Falta:**
+- [ ] Crear el workflow nuevo en n8n (2 nodos: Webhook → HTTP Request a Retell; ya no necesita Sheets porque eso se guarda directo).
+- [ ] Activarlo y copiar la Production URL del Webhook.
 - [ ] Poner `N8N_WEBHOOK_URL` en Vercel → Redeploy.
+- [ ] Probar: enviar el formulario → confirmar que suena la llamada en el teléfono del dueño.
 
-📄 Detalle completo: **`INTEGRACION-LEADS.md`**
+📄 Detalle completo, con el JSON exacto del nodo y por qué no se reutiliza "zepaimotors-postcall": **`PENDIENTE-LLAMADA-RETELL.md`**
 
 ---
 
