@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowLeft, WhatsappLogo, Lightning, Engine, GitFork, Gauge, Calendar, Car, GasPump } from "@phosphor-icons/react";
+import { ArrowLeft, WhatsappLogo, Lightning, Engine, GitFork, Gauge, Calendar, Car, GasPump, Palette, ShieldCheck, Check, Wrench } from "@phosphor-icons/react";
 import { useLang } from "../LanguageProvider";
 import { business } from "@/lib/i18n";
 import { formatPrice, formatKm, type Vehicle } from "@/lib/vehicles";
@@ -32,6 +32,8 @@ export function VehicleDetail({ vehicle: v, related }: { vehicle: Vehicle; relat
     { Icon: Calendar, label: t.vehicle.year, value: String(v.year) },
     { Icon: Car, label: t.vehicle.body, value: v.bodyType },
     { Icon: GasPump, label: t.vehicle.fuel, value: t.fuel[v.fuelType] },
+    ...(v.color ? [{ Icon: Palette, label: t.vehicle.color, value: v.color }] : []),
+    ...(v.warrantyUntil ? [{ Icon: ShieldCheck, label: t.vehicle.warranty, value: v.warrantyUntil }] : []),
   ];
 
   return (
@@ -133,6 +135,51 @@ export function VehicleDetail({ vehicle: v, related }: { vehicle: Vehicle; relat
             ))}
           </div>
         </div>
+
+        {/* Equipment */}
+        {v.features && v.features[lang].length > 0 && (
+          <div className="mt-14">
+            <h2 className="display text-2xl text-bone sm:text-3xl">{t.vehicle.featuresTitle}</h2>
+            <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+              {v.features[lang].map((item) => (
+                <div key={item} className="flex items-start gap-2.5">
+                  <Check size={16} weight="bold" className="mt-0.5 shrink-0 text-rev" />
+                  <p className="text-[14px] text-fog">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Condition & maintenance */}
+        {v.conditionHighlights && v.conditionHighlights[lang].length > 0 && (
+          <div className="mt-14">
+            <h2 className="display text-2xl text-bone sm:text-3xl">{t.vehicle.conditionTitle}</h2>
+            <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+              {v.conditionHighlights[lang].map((item) => (
+                <div key={item} className="flex items-start gap-2.5">
+                  <Check size={16} weight="bold" className="mt-0.5 shrink-0 text-rev" />
+                  <p className="text-[14px] text-fog">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Honest disclosure of pending work */}
+        {v.toImprove && v.toImprove[lang].length > 0 && (
+          <div className="mt-14">
+            <h2 className="display text-2xl text-bone sm:text-3xl">{t.vehicle.toImproveTitle}</h2>
+            <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+              {v.toImprove[lang].map((item) => (
+                <div key={item} className="flex items-start gap-2.5">
+                  <Wrench size={16} weight="bold" className="mt-0.5 shrink-0 text-mist" />
+                  <p className="text-[14px] text-fog">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Related */}
         {related.length > 0 && (
