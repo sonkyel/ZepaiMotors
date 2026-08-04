@@ -32,3 +32,6 @@ yarn-error.log*
 Thumbs.db
 
 .vercel
+
+# carpeta de trabajo: fotos reales sin procesar, no se sube al repo
+/fotos-autos-reales

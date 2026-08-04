@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -12,6 +13,8 @@ import { Reveal } from "../Reveal";
 
 export function VehicleDetail({ vehicle: v, related }: { vehicle: Vehicle; related: Vehicle[] }) {
   const { t, lang } = useLang();
+  const gallery = v.images.length > 0 ? v.images : [v.image];
+  const [activeImage, setActiveImage] = useState(0);
 
   const price = formatPrice(v.priceEUR);
   const waMessages: Record<typeof lang, string> = {
@@ -40,17 +43,50 @@ export function VehicleDetail({ vehicle: v, related }: { vehicle: Vehicle; relat
         </Link>
 
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-14">
-          {/* Image */}
+          {/* Image gallery */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="relative aspect-[4/3] w-full overflow-hidden border border-line"
           >
-            <Image src={v.image} alt={`${v.brand} ${v.model}`} fill priority sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
-            <div className="absolute left-4 top-4 bg-ink/80 px-3 py-1.5 font-mono text-[12px] uppercase tracking-wide text-fog backdrop-blur-sm">
-              {v.brand}
+            <div className="relative aspect-[4/3] w-full overflow-hidden border border-line">
+              <Image
+                key={gallery[activeImage]}
+                src={gallery[activeImage]}
+                alt={`${v.brand} ${v.model} — ${activeImage + 1}/${gallery.length}`}
+                fill
+                priority
+                sizes="(max-width:1024px) 100vw, 60vw"
+                className="object-cover"
+              />
+              <div className="absolute left-4 top-4 bg-ink/80 px-3 py-1.5 font-mono text-[12px] uppercase tracking-wide text-fog backdrop-blur-sm">
+                {v.brand}
+              </div>
+              {gallery.length > 1 && (
+                <div className="absolute bottom-4 right-4 bg-ink/80 px-2.5 py-1 font-mono text-[12px] text-fog backdrop-blur-sm">
+                  {activeImage + 1}/{gallery.length}
+                </div>
+              )}
             </div>
+
+            {gallery.length > 1 && (
+              <div className="mt-3 grid grid-cols-5 gap-2">
+                {gallery.map((src, i) => (
+                  <button
+                    key={src}
+                    type="button"
+                    onClick={() => setActiveImage(i)}
+                    aria-label={`${t.vehicle.overview} ${i + 1}`}
+                    className={`relative aspect-[4/3] overflow-hidden border transition-colors ${
+                      i === activeImage ? "border-rev" : "border-line hover:border-rev-deep"
+                    }`}
+                  >
+                    <Image src={src} alt="" fill sizes="120px" className="object-cover" />
+                    {i !== activeImage && <div className="absolute inset-0 bg-ink/40" />}
+                  </button>
+                ))}
+              </div>
+            )}
           </motion.div>
 
           {/* Info */}
