@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowUpRight } from "@phosphor-icons/react";
-import { formatPrice, type Vehicle } from "@/lib/vehicles";
+import { formatPrice, formatKm, type Vehicle } from "@/lib/vehicles";
 import { useLang } from "./LanguageProvider";
 
 export function VehicleCard({ v, priority = false }: { v: Vehicle; priority?: boolean }) {
@@ -43,8 +43,10 @@ export function VehicleCard({ v, priority = false }: { v: Vehicle; priority?: bo
           <h3 className="display text-xl leading-none text-bone sm:text-2xl">{v.model}</h3>
 
           <div className="mt-3 flex flex-wrap gap-1.5">
+            <span className="bg-ink-3 px-2 py-1 font-mono text-[11px] text-fog">{t.fuel[v.fuelType]}</span>
+            <span className="bg-ink-3 px-2 py-1 font-mono text-[11px] text-fog">{v.year}</span>
+            <span className="bg-ink-3 px-2 py-1 font-mono text-[11px] text-fog">{formatKm(v.specs.mileageKm)}</span>
             <span className="bg-ink-3 px-2 py-1 font-mono text-[11px] text-fog">{v.specs.power}</span>
-            <span className="bg-ink-3 px-2 py-1 font-mono text-[11px] text-fog">{v.specs.engine}</span>
           </div>
 
           <div className="mt-auto flex items-end justify-between border-t border-line pt-4">

@@ -22,6 +22,7 @@ No necesitas instalar nada. Todo se edita desde el navegador en GitHub.
 | Teléfono, correo, dirección, redes sociales | `lib/i18n.ts` | Busca el bloque `business = { ... }` (casi al final). |
 | Horario / textos de contacto | `lib/i18n.ts` | Dentro de cada idioma, bloque `contact`. |
 | Autos, precios, año, specs | `lib/vehicles.ts` | Cada auto es un bloque. `priceEUR: 560000` es el precio en euros (sin símbolo ni comas). |
+| Combustible de un auto (para el filtro) | `lib/vehicles.ts` | `fuelType:` debe ser exactamente una de estas 4 palabras: `"gasolina"`, `"diesel"`, `"hibrido"`, `"electrico"`. |
 | Marcar un auto como "destacado" (sale en Inicio) | `lib/vehicles.ts` | Pon `featured: true` en ese auto. |
 | Fotos del hero o de los autos | Carpeta `public/` y `public/vehicles/` | Sube una imagen con **el mismo nombre** del archivo que reemplazas. |
 | Colores de la marca (rojo, fondo, etc.) | `app/globals.css` | Bloque `@theme` arriba. `--color-rev` es el rojo de acento. |
@@ -51,3 +52,30 @@ heroCtaPrimary: "Ver inventario",
 
 ## ¿Algo se rompió?
 Si tras un cambio el sitio muestra error, Vercel marca el último despliegue como fallido y **el sitio sigue mostrando la versión anterior** (no se cae). Revisa que no hayas borrado una comilla o una coma, o deshaz el cambio desde el historial del archivo en GitHub.
+
+## Cargar el inventario real (autos de verdad)
+
+Los 12 autos que hay hoy son de **muestra** (fotos generadas, no reales). Cuando tengas los datos reales de un auto de la concesionaria, pásame esta plantilla rellenada (por chat) y yo lo cargo al sitio — no hace falta que la edites tú mismo en GitHub.
+
+**Por cada auto, necesito:**
+```
+Marca: 
+Modelo: 
+Año: 
+Precio (EUR, solo número): 
+Kilometraje (km, solo número): 
+Combustible: gasolina / diesel / hibrido / electrico
+Potencia (ej. "525 hp"): 
+Motor (ej. "4.0L V8 Biturbo"): 
+Tracción (ej. "AWD", "RWD"): 
+Carrocería: supercar / suv / sedan / coupe / convertible
+Descripción corta (1-2 frases, para la ficha del auto): 
+¿Destacado en Inicio? sí / no
+Foto: (adjunta la imagen real del auto, buena resolución, apaisada)
+```
+
+**Notas:**
+- La foto debe ser horizontal (apaisada), buena resolución — se recorta automáticamente en formato 4:3 en las tarjetas.
+- La descripción la puedo traducir yo a los 3 idiomas (ES/EN/FR) si solo me la das en español.
+- Puedes mandarme varios autos de una vez, uno tras otro con esta misma plantilla.
+- Cuando tenga los primeros autos reales, reemplazamos los 12 de muestra por los reales (o los dejamos convivir, como prefieras).

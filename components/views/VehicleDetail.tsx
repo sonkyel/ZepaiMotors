@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowLeft, WhatsappLogo, Lightning, Engine, GitFork, Gauge, Calendar, Car } from "@phosphor-icons/react";
+import { ArrowLeft, WhatsappLogo, Lightning, Engine, GitFork, Gauge, Calendar, Car, GasPump } from "@phosphor-icons/react";
 import { useLang } from "../LanguageProvider";
 import { business } from "@/lib/i18n";
 import { formatPrice, formatKm, type Vehicle } from "@/lib/vehicles";
@@ -28,6 +28,7 @@ export function VehicleDetail({ vehicle: v, related }: { vehicle: Vehicle; relat
     { Icon: Gauge, label: t.vehicle.mileage, value: formatKm(v.specs.mileageKm) },
     { Icon: Calendar, label: t.vehicle.year, value: String(v.year) },
     { Icon: Car, label: t.vehicle.body, value: v.bodyType },
+    { Icon: GasPump, label: t.vehicle.fuel, value: t.fuel[v.fuelType] },
   ];
 
   return (

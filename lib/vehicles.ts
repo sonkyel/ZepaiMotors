@@ -1,6 +1,7 @@
 import type { Lang } from "./i18n";
 
 export type BodyType = "supercar" | "suv" | "sedan" | "coupe" | "convertible";
+export type FuelType = "gasolina" | "diesel" | "hibrido" | "electrico";
 
 export type Vehicle = {
   slug: string;
@@ -10,6 +11,7 @@ export type Vehicle = {
   priceEUR: number;
   image: string;
   bodyType: BodyType;
+  fuelType: FuelType;
   specs: { power: string; engine: string; drivetrain: string; mileageKm: number };
   blurb: Record<Lang, string>;
   featured?: boolean;
@@ -24,6 +26,7 @@ export const vehicles: Vehicle[] = [
     priceEUR: 340000,
     image: "/vehicles/ferrari-sf90.png",
     bodyType: "supercar",
+    fuelType: "hibrido",
     specs: { power: "986 hp", engine: "4.0L V8 Hibrido", drivetrain: "AWD", mileageKm: 8400 },
     blurb: {
       es: "El primer hibrido enchufable de serie de Maranello. Aceleracion casi irreal con la finesa de un Ferrari.",
@@ -40,6 +43,7 @@ export const vehicles: Vehicle[] = [
     priceEUR: 560000,
     image: "/vehicles/lamborghini-revuelto.png",
     bodyType: "supercar",
+    fuelType: "hibrido",
     specs: { power: "1015 hp", engine: "6.5L V12 Hibrido", drivetrain: "AWD", mileageKm: 3200 },
     blurb: {
       es: "El nuevo V12 hibrido de Sant'Agata. Puertas de tijera, potencia electrificada y teatro puro.",
@@ -56,6 +60,7 @@ export const vehicles: Vehicle[] = [
     priceEUR: 290000,
     image: "/vehicles/porsche-gt3rs.png",
     bodyType: "coupe",
+    fuelType: "gasolina",
     specs: { power: "525 hp", engine: "4.0L Flat-6", drivetrain: "RWD", mileageKm: 1900 },
     blurb: {
       es: "Un coche de carreras con placa. Paquete Weissach y aerodinamica activa para la pista.",
@@ -72,6 +77,7 @@ export const vehicles: Vehicle[] = [
     priceEUR: 520000,
     image: "/vehicles/rolls-phantom.png",
     bodyType: "sedan",
+    fuelType: "gasolina",
     specs: { power: "571 hp", engine: "6.75L V12", drivetrain: "RWD", mileageKm: 5600 },
     blurb: {
       es: "La cumbre del lujo automotriz. Silencio absoluto, cielo de estrellas y presencia incomparable.",
@@ -88,6 +94,7 @@ export const vehicles: Vehicle[] = [
     priceEUR: 420000,
     image: "/vehicles/ferrari-purosangue.png",
     bodyType: "suv",
+    fuelType: "gasolina",
     specs: { power: "725 hp", engine: "6.5L V12", drivetrain: "AWD", mileageKm: 4100 },
     blurb: {
       es: "El primer cuatro puertas de Ferrari. Un V12 atmosferico con el alma de un superdeportivo.",
@@ -103,6 +110,7 @@ export const vehicles: Vehicle[] = [
     priceEUR: 265000,
     image: "/vehicles/lamborghini-urus.png",
     bodyType: "suv",
+    fuelType: "gasolina",
     specs: { power: "666 hp", engine: "4.0L V8 Twin-Turbo", drivetrain: "AWD", mileageKm: 11200 },
     blurb: {
       es: "El SUV mas afilado del mundo. Rendimiento de superdeportivo con uso diario.",
@@ -118,6 +126,7 @@ export const vehicles: Vehicle[] = [
     priceEUR: 230000,
     image: "/vehicles/mercedes-g63.png",
     bodyType: "suv",
+    fuelType: "gasolina",
     specs: { power: "585 hp", engine: "4.0L V8 Biturbo", drivetrain: "AWD", mileageKm: 9800 },
     blurb: {
       es: "El icono inconfundible. Presencia brutal, V8 AMG hecho a mano y lujo absoluto.",
@@ -133,6 +142,7 @@ export const vehicles: Vehicle[] = [
     priceEUR: 430000,
     image: "/vehicles/rolls-cullinan.png",
     bodyType: "suv",
+    fuelType: "gasolina",
     specs: { power: "563 hp", engine: "6.75L V12", drivetrain: "AWD", mileageKm: 3400 },
     blurb: {
       es: "El refinamiento elevado a SUV. Se desliza sobre cualquier camino con serenidad total.",
@@ -148,6 +158,7 @@ export const vehicles: Vehicle[] = [
     priceEUR: 215000,
     image: "/vehicles/aston-dbx707.png",
     bodyType: "suv",
+    fuelType: "gasolina",
     specs: { power: "707 hp", engine: "4.0L V8 Twin-Turbo", drivetrain: "AWD", mileageKm: 14500 },
     blurb: {
       es: "El SUV mas potente de su clase. Elegancia britanica con respuesta inmediata a cualquier velocidad.",
@@ -163,6 +174,7 @@ export const vehicles: Vehicle[] = [
     priceEUR: 135000,
     image: "/vehicles/defender-110.png",
     bodyType: "suv",
+    fuelType: "gasolina",
     specs: { power: "525 hp", engine: "5.0L V8", drivetrain: "AWD", mileageKm: 22000 },
     blurb: {
       es: "El todoterreno definitivo reinventado. Capacidad legendaria con lujo moderno.",
@@ -178,6 +190,7 @@ export const vehicles: Vehicle[] = [
     priceEUR: 245000,
     image: "/vehicles/bentley-bentayga.png",
     bodyType: "suv",
+    fuelType: "gasolina",
     specs: { power: "542 hp", engine: "4.0L V8", drivetrain: "AWD", mileageKm: 2100 },
     blurb: {
       es: "Elegancia atletica y lujo hecho a mano. Acabado Mulliner y artesania britanica.",
@@ -193,6 +206,7 @@ export const vehicles: Vehicle[] = [
     priceEUR: 95000,
     image: "/vehicles/mercedes-eqs.png",
     bodyType: "sedan",
+    fuelType: "electrico",
     specs: { power: "516 hp", engine: "Dual Motor EV", drivetrain: "AWD", mileageKm: 18700 },
     blurb: {
       es: "El buque insignia electrico. Hyperscreen MBUX y autonomia de gran turismo en silencio total.",
