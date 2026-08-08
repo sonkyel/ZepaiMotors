@@ -582,9 +582,9 @@ export const dict: Record<Lang, Dict> = { es, en, fr };
 
 export const business = {
   name: "Zepaimotors",
-  phone: "+33 1 53 67 84 00",
-  phoneHref: "+33153678400",
-  whatsappHref: "33153678400",
+  phone: "+1 (555) 674-9566",
+  phoneHref: "+15556749566",
+  whatsappHref: "15556749566",
   email: "info@zepaiagency.com",
   address: "9 Avenue Montaigne, 75008 Paris, France",
   social: {
