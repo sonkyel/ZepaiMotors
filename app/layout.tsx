@@ -4,6 +4,7 @@ import "./globals.css";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 
 const anton = Anton({
   subsets: ["latin"],
@@ -66,6 +67,7 @@ export default function RootLayout({
           <Nav />
           <main>{children}</main>
           <Footer />
+          <WhatsAppFloat />
         </LanguageProvider>
       </body>
     </html>
